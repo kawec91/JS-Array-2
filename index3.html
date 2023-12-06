@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <header></header>
+    <main>
+      <div></div>
+    </main>
+    <footer></footer>
+
+    <script>
+      let l1 = [
+        {
+          land: "Polen",
+          sprache: "Polnisch",
+          stadt: "Warschaw",
+          adresse: "Wierzbiny 6",
+          name: "Lukasz ",
+          geschlecht: "M",
+          konto: "1",
+        },
+        {
+          land: "Polen",
+          sprache: "Polnisch",
+          stadt: "Warschaw",
+          adresse: "Wierzbiny 6",
+          name: "Ada",
+          geschlecht: "W",
+          konto: "2",
+        },
+        {
+          land: "Deutschland",
+          sprache: "Polnisch, Deutsch",
+          stadt: "Wuppertal",
+          adresse: "Nevigesser Str. 151",
+          name: "Yvonne",
+          geschlecht: "W",
+          konto: "3",
+        },
+        {
+          land: "Deutschland",
+          sprache: "Deutsch",
+          stadt: "Wuppertal",
+          adresse: "Nevigesser Str. 151",
+          name: "Andre",
+          geschlecht: "M",
+          konto: "4",
+        },
+        {
+          land: "Polen",
+          sprache: "Polnisch",
+          stadt: "Warschaw",
+          adresse: "Wierzbiny 6",
+          name: "Darek",
+          geschlecht: "M",
+          konto: "5",
+        },
+      ];
+      let l2 = [
+        { konto: "1", reiseziele: ["Thailand", "USA", "Malediven"] },
+        { konto: "2", reiseziele: ["Australien", "Mexico", "Malediven"] },
+        { konto: "3", reiseziele: ["Italy", "Spanien", "Kubik"] },
+        { konto: "4", reiseziele: ["Kubik", "Madagaskar", "Hawaii"] },
+        { konto: "5", reiseziele: ["Filipine", "Tunis", "Japan"] },
+      ];
+      let l3 = [
+        {
+          konto: "1",
+          kinder: "1",
+          ehepartner: { name: "Ada", geschlecht: "W" },
+        },
+        {
+          konto: "2",
+          kinder: "1",
+          ehepartner: { name: "Lukasz", geschlecht: "M" },
+        },
+        {
+          konto: "3",
+          kinder: "3",
+          ehepartner: { name: "Andre", geschlecht: "M" },
+        },
+        {
+          konto: "4",
+          kinder: "3",
+          ehepartner: { name: "Yvonne", geschlecht: "W" },
+        },
+        {
+          konto: "5",
+          kinder: "3",
+          ehepartner: { name: "-", geschlecht: "-" },
+        },
+      ];
+      let newList = [];
+
+      let item = {
+        Person: {
+          Individuum: { name: "", geschlecht: "" },
+          Ehepartner: { name: "", geschlecht: "" },
+          Kinder: "",
+        },
+        Adresse: { land: "", stadt: "", adresse: "" },
+        Sprache: "",
+        Reiseziele: [],
+      };
+      //3List to 1 List Convertieren
+      for (let i = 0; i < l1.length; i++) {
+        item.Adresse.land = l1[i].land;
+        item.Sprache = l1[i].sprache;
+        item.Adresse.stadt = l1[i].stadt;
+        item.Adresse.adresse = l1[i].adresse;
+        item.Person.Individuum.name = l1[i].name;
+        item.Person.Individuum.geschlecht = l1[i].geschlecht;
+        for (let z = 0; z < l2.length; z++) {
+          if (l1[i].konto === l2[z].konto) {
+            item.Reiseziele = l2[z].reiseziele;
+            for (let y = 0; y < l3.length; y++) {
+              if (l2[z].konto === l3[y].konto) {
+                item.Person.Kinder = l3[y].kinder;
+                item.Person.Ehepartner.name = l3[y].ehepartner.name;
+                item.Person.Ehepartner.geschlecht = l3[y].ehepartner.geschlecht;
+                newList.push(item);
+
+                item = {
+                  Person: {
+                    Individuum: { name: "", geschlecht: "" },
+                    Ehepartner: { name: "", geschlecht: "" },
+                    Kinder: "",
+                  },
+                  Adresse: { land: "", stadt: "", adresse: "" },
+                  Sprache: "",
+                  Reiseziele: [],
+                };
+              }
+            }
+          }
+        }
+      }
+      console.log("NL: ", newList);
+
+      function toHtml() {
+        let htmlO = [];
+        let con = document.getElementsByTagName("div")[0];
+        console.log(con);
+        newList.forEach((p) => {
+          htmlO.push(`<tr>
+                <td>${p.Person.Individuum.name} (${p.Person.Individuum.geschlecht})</td>
+                <td>${p.Person.Ehepartner.name} (${p.Person.Ehepartner.geschlecht})</td>
+                <td>${p.Person.Kinder}</td>
+                <td>${p.Adresse.adresse}, ${p.Adresse.stadt} ${p.Adresse.land}</td>
+                <td>${p.Sprache}</td>
+                <td>${p.Reiseziele}</td>
+            </tr>`);
+        });
+        con.innerHTML = `<table>
+            <thead>
+                <tr>
+                    <th>Persone (N, G)</th>    
+                    <th>Ehepartner (N, G)</th>    
+                    <th>Kinder</th>
+                    <th>Adress</th>
+                    <th>Sprache</th>
+                    <th>Reiseziele</th>
+                </tr>
+            </thead>
+            <tbody>${htmlO}</tbody>
+        </table>`;
+      }
+
+      toHtml();
+    </script>
+  </body>
+</html>
